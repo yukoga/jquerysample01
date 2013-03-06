@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>jQueryによるUI操作のサンプル</title>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+		<link type="text/css" rel="stylesheet" href="skin/selectable/style.css" />
+		<script type="text/javascript" src="js/jQselectable.js"></script>
+		<style type="text/css">
+		#prefBoxModal {
+			font-size: small;
+		}
+		#prefBoxModal dt {
+			clear: both;
+			float: left;
+			width: 96px;
+			background:#ff0000;
+		}
+		#prefBoxModal dd {
+			width: 360;
+			margin-left: 9em;
+		}
+		</style>
+		<script type="text/javascript">
+		var _prefData = new Array();
+		_prefData[0] = {
+				'label': '広域',
+				'pref': [
+				{ 'value': '99', 'name': '全国' }, 
+				{ 'value': '97', 'name': '東日本' }, 
+				{ 'value': '98', 'name': '西日本' }
+			]
+		};
+		_prefData[1] = {
+				'label': '北海道',
+				'pref': [
+				{ 'value': '01', 'name': '北海道' }
+			]
+		};
+		_prefData[2] = {
+				'label': '東北',
+				'pref': [
+				{ 'value': '02', 'name': '青森' }, 
+				{ 'value': '05', 'name': '秋田' }, 
+				{ 'value': '03', 'name': '岩手' }, 
+				{ 'value': '04', 'name': '宮城' }, 
+				{ 'value': '06', 'name': '山形' }, 
+				{ 'value': '07', 'name': '福島' }
+			]
+		};
+		_prefData[3] = {
+				'label': '関東・甲信越',
+				'pref': [
+				{ 'value': '13', 'name': '東京' }, 
+				{ 'value': '14', 'name': '神奈川' }, 
+				{ 'value': '12', 'name': '千葉' }, 
+				{ 'value': '11', 'name': '埼玉' }, 
+				{ 'value': '08', 'name': '茨城' }, 
+				{ 'value': '09', 'name': '栃木' }, 
+				{ 'value': '10', 'name': '群馬' }, 
+				{ 'value': '19', 'name': '山梨' }, 
+				{ 'value': '20', 'name': '長野' }, 
+				{ 'value': '15', 'name': '新潟' }
+			]
+		};
+		_prefData[4] = {
+				'label': '東海',
+				'pref': [
+				{ 'value': '23', 'name': '愛知' }, 
+				{ 'value': '22', 'name': '静岡' }, 
+				{ 'value': '21', 'name': '岐阜' }, 
+				{ 'value': '24', 'name': '三重' }
+			]
+		};
+		_prefData[5] = {
+				'label': '北陸',
+				'pref': [
+				{ 'value': '16', 'name': '富山' }, 
+				{ 'value': '17', 'name': '石川' }, 
+				{ 'value': '18', 'name': '福井' }
+			]
+		};
+		_prefData[6] = {
+				'label': '関西',
+				'pref': [
+				{ 'value': '27', 'name': '大阪' }, 
+				{ 'value': '28', 'name': '兵庫' }, 
+				{ 'value': '26', 'name': '京都' }, 
+				{ 'value': '25', 'name': '滋賀' }, 
+				{ 'value': '29', 'name': '奈良' }, 
+				{ 'value': '30', 'name': '和歌山' }
+			]
+		};
+		_prefData[7] = {
+				'label': '中国',
+				'pref': [
+				{ 'value': '34', 'name': '広島' }, 
+				{ 'value': '33', 'name': '岡山' }, 
+				{ 'value': '35', 'name': '山口' }, 
+				{ 'value': '32', 'name': '島根' }, 
+				{ 'value': '31', 'name': '鳥取' }
+			]
+		};
+		_prefData[8] = {
+				'label': '四国',
+				'pref': [
+				{ 'value': '37', 'name': '香川' }, 
+				{ 'value': '38', 'name': '愛媛' }, 
+				{ 'value': '39', 'name': '高知' }, 
+				{ 'value': '36', 'name': '徳島' }
+			]
+		};
+		_prefData[9] = {
+				'label': '九州・沖縄',
+				'pref': [
+				{ 'value': '40', 'name': '福岡' }, 
+				{ 'value': '41', 'name': '佐賀' }, 
+				{ 'value': '42', 'name': '長崎' }, 
+				{ 'value': '43', 'name': '熊本' }, 
+				{ 'value': '44', 'name': '大分' }, 
+				{ 'value': '45', 'name': '宮崎' }, 
+				{ 'value': '46', 'name': '鹿児島' }, 
+				{ 'value': '47', 'name': '沖縄' }
+			]
+		};
+		$(function() {
+		  $.fn.buildHtmlElement = function() {
+		  	return this;
+		  }
+		  $.fn.buildPrefPanel = function(){
+		  	return this;
+		  }
+		  $.fn.removePrefNode = function(){
+		  	return this;
+		  }
+
+		  $('#prefBoxModal').dialog({
+		  	autoOpen: false,
+		  	height: 380,
+		  	width: 680,
+		  	modal: true,
+		  	buttons: {
+		  	  '都道府県を登録する': function() {
+		  	  	var _prefCode = [];
+		  	  	$('[name="prefcode[]"]:checked').each(function(){
+		  	      _prefCode.push(this.value);
+		  	  	});
+		  	  	if ($.inArray("99", _prefCode) > -1) {
+		  		  if (($.inArray("98", _prefCode) > -1) || ($.inArray("97", _prefCode) > -1)) {
+		  		  	console.log("「全国」と「東日本」「西日本」あるいは他の都道府県を選択した場合、「全国」としてデータ登録されます。");
+		  		  	_prefCode.splice($.inArray("97", _prefCode))._prefCode.splice($.inArray("98", _prefCode));
+		  		  }
+		  	  	} else if (($.inArray("98", _prefCode) > -1) && ($.inArray("97", _prefCode) > -1)) {
+		  		  	console.log("東日本・西日本の両方を選択した時は、全国としてデータ登録されます。");
+		  		  	_prefCode.splice($.inArray("97", _prefCode))._prefCode.splice($.inArray("98", _prefCode));
+		  		  	_prefCode.push("99");
+		  	  	}
+			  	$(this).dialog('close');		  	  	
+		  	  },
+			  'キャンセル': function() {
+				$(this).dialog('close');
+			  }
+		  	},
+		  	'close': function() {
+		  	  console.log('called #prefBoxModal.close');
+		  	}
+		  });
+		  $('#prefbutton').click(function(){
+		  	$('#prefBoxModal').dialog('open');
+		  });
+		  $('#pref_code').jQselectable({
+		  	set: "fadeIn",
+		  	setDuration: "fast",
+		  	opacity: .9
+		  }
+		  );
+		  $('.delPrefUI').click(function(){
+		  	var _self = $(this);
+		  	_self.parent('div').removePrefNode();
+		  });
+		  $('.addDetailedArea').click(function(){
+		  	  var _self = $(this);
+		  	  var _div = '<div class="dynPrefBox">これだよ</div>';
+			  $(_self).append(_div);
+		  });
+		  // add your code here.
+		  var _initialValue = '都道府県を入力してください';
+		  $("#pref01")
+		  .focus(function() {
+			  var _self = $(this);
+			  if (_self.val() === _initialValue) { _self.val(''); }
+		  })
+		  .blur(function() {
+			  var _self = $(this);
+			  if (_self.val() === '') { _self.val(_initialValue); }
+		  })
+		});
+		</script>
+</head>
+<body>
+<p>次の３つの機能をもつサンプルを作る</p>
+1.テキストボックスをクリックしたら都道府県のチェックボックスが表示される <br />
+2.チェックボックスをクリックしたらチェックされた都道府県が入力されたテキストボックスを複数表示する。<br />
+3.さらに、都道府県のテキストボックスの隣の詳細地域を入力する、をクリックしたらテキストエリアが表示される。 <br />
+
+<br />
+<br />
+
+<form action="#">
+<table>
+		<tbody>
+        <tr>
+				<th>都道府県のパネルを表示する</th>
+                <td><input type="button" name="prefbutton" value="都道府県" id="prefbutton" /></td>
+        </tr>
+        <tr>
+				<th>xxxx</th>
+                <td><input type="text" name="pref01" value="都道府県を入力してください" id="pref01" /></td>
+        </tr>
+        <tr>
+			<th>影響範囲</th>
+			<td>
+			<div id="pref1">
+	    	<select id="pref_code" name="pref" class="selectable">
+	    		<optgroup label="北海道">
+	    			<option value="01">北海道</option>
+	    		</optgroup>
+	    		<optgroup label="東北">
+	    			<option value="02">青森県</option>
+	    			<option value="03">岩手県</option>	
+	    			<option value="04">宮城県</option>
+	    			<option value="05">秋田県</option>
+	    			<option value="06">山形県</option>
+	    			<option value="07">福島県</option>
+	    		</optgroup>
+	    		<optgroup label="関東">
+	    			<option value="08">東京都</option>
+	    			<option value="09">茨城県</option>
+	    			<option value="10">栃木県</option>
+	    			<option value="11">群馬県</option>
+	    			<option value="12">埼玉県</option>
+	    			<option value="13">千葉県</option>
+	    			<option value="14">神奈川県</option>
+	    		</optgroup>
+	    		<optgroup label="北陸">
+	    			<option value="15">富山県</option>
+	    			<option value="16">石川県</option>
+	    			<option value="17">福井県</option>
+	    		</optgroup>
+	    		<optgroup label="甲信越">
+	    			<option value="18">新潟県</option>
+	    			<option value="19">山梨県</option>
+	    			<option value="20">長野県</option>
+	    		</optgroup>
+	    		<optgroup label="東海">
+	    			<option value="21">岐阜県</option>
+	    			<option value="22">静岡県</option>
+	    			<option value="23">愛知県</option>
+	    			<option value="24">三重県</option>
+	    		</optgroup>
+	    		<optgroup label="関西">
+	    			<option value="25">滋賀県</option>
+	    			<option value="26">京都府</option>
+	    			<option value="27">大阪府</option>
+	    			<option value="28">兵庫県</option>
+	    			<option value="29">奈良県</option>
+	    			<option value="30">和歌山県</option>
+	    		</optgroup>
+	    		<optgroup label="中四国">
+	    			<option value="31">鳥取県</option>
+	    			<option value="32">島根県</option>
+	    			<option value="33">岡山県</option>
+	    			<option value="34">広島県</option>
+	    			<option value="35">山口県</option>
+	    			<option value="36">徳島県</option>
+	    			<option value="37">香川県</option>
+	    			<option value="38">愛媛県</option>
+	    			<option value="39">高知県</option>
+	    		</optgroup>
+	    		<optgroup label="九州">
+	    			<option value="40">福岡県</option>
+	    			<option value="41">佐賀県</option>
+	    			<option value="42">長崎県</option>
+	    			<option value="43">熊本県</option>
+	    			<option value="44">大分県</option>
+	    			<option value="45">宮崎県</option>
+	    			<option value="46">鹿児島県</option>
+	    		</optgroup>
+	    		<optgroup label="沖縄">
+	    			<option value="47">沖縄県</option>
+	    		</optgroup>
+	    	</select>
+	    	<a href="#" class="delPrefUI">削除する</a>
+	    	<a href="#" class="addDetailedArea">詳細な地域を追加する</a><br />
+	    	</div>				
+			</td>
+        </tr>
+		</tbody>
+</table>
+<input type="button" value="ボタン" id="formButtn1" />
+</form>
+<form id="prefBoxModal">
+	<dl>
+		<dt>広域</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="99" />全国&nbsp;<input type="checkbox" name="prefcode[]" value="97" />東日本&nbsp;<input type="checkbox" name="prefcode[]" value="98" />西日本</dd>
+		<dt>北海道</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="01" />北海道</dd>
+		<dt>東北</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="02" />青森&nbsp;<input type="checkbox" name="prefcode[]" value="05" />秋田&nbsp;<input type="checkbox" name="prefcode[]" value="03" />岩手&nbsp;<input type="checkbox" name="prefcode[]" value="06" />山形&nbsp;<input type="checkbox" name="prefcode[]" value="04" />宮城&nbsp;<input type="checkbox" name="prefcode[]" value="07" />福島&nbsp;</dd>
+		<dt>関東・甲信越</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="13" />東京&nbsp;<input type="checkbox" name="prefcode[]" value="14" />神奈川&nbsp;<input type="checkbox" name="prefcode[]" value="12" />千葉&nbsp;<input type="checkbox" name="prefcode[]" value="11" />埼玉&nbsp;<input type="checkbox" name="prefcode[]" value="08" />茨城&nbsp;<input type="checkbox" name="prefcode[]" value="09" />栃木&nbsp;<input type="checkbox" name="prefcode[]" value="10" />群馬&nbsp;<input type="checkbox" name="prefcode[]" value="19" />山梨&nbsp;<input type="checkbox" name="prefcode[]" value="20" />長野&nbsp;<input type="checkbox" name="prefcode[]" value="15" />新潟</dd>
+		<dt>東海</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="23" />愛知&nbsp;<input type="checkbox" name="prefcode[]" value="22" />静岡&nbsp;<input type="checkbox" name="prefcode[]" value="21" />岐阜&nbsp;<input type="checkbox" name="prefcode[]" value="24" />三重</dd>
+		<dt>北陸</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="16" />富山&nbsp;<input type="checkbox" name="prefcode[]" value="17" />石川&nbsp;<input type="checkbox" name="prefcode[]" value="18" />福井</dd>
+		<dt>関西</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="27" />大阪&nbsp;<input type="checkbox" name="prefcode[]" value="28" />兵庫&nbsp;<input type="checkbox" name="prefcode[]" value="26" />京都&nbsp;<input type="checkbox" name="prefcode[]" value="25" />滋賀&nbsp;<input type="checkbox" name="prefcode[]" value="29" />奈良&nbsp;<input type="checkbox" name="prefcode[]" value="30" />和歌山</dd>
+		<dt>中国</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="34" />広島&nbsp;<input type="checkbox" name="prefcode[]" value="33" />岡山&nbsp;<input type="checkbox" name="prefcode[]" value="35" />山口&nbsp;<input type="checkbox" name="prefcode[]" value="32" />島根&nbsp;<input type="checkbox" name="prefcode[]" value="31" />鳥取</dd>
+		<dt>四国</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="37" />香川&nbsp;<input type="checkbox" name="prefcode[]" value="38" />愛媛&nbsp;<input type="checkbox" name="prefcode[]" value="39" />高知&nbsp;<input type="checkbox" name="prefcode[]" value="36" />徳島</dd>
+		<dt>九州・沖縄</dt>
+		<dd><input type="checkbox" name="prefcode[]" value="40" />福岡&nbsp;<input type="checkbox" name="prefcode[]" value="41" />佐賀&nbsp;<input type="checkbox" name="prefcode[]" value="42" />長崎&nbsp;<input type="checkbox" name="prefcode[]" value="43" />熊本&nbsp;<input type="checkbox" name="prefcode[]" value="44" />大分&nbsp;<input type="checkbox" name="prefcode[]" value="45" />宮崎&nbsp;<input type="checkbox" name="prefcode[]" value="46" />鹿児島&nbsp;<input type="checkbox" name="prefcode[]" value="47" />沖縄</dd>
+	</dl>
+</form>
+</body>
+</html>

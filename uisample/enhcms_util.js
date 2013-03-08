@@ -153,6 +153,7 @@ var _prefTable = {
 };
 
 
+/*
 var EnhCmsObject = function() {
   if (arguments.length > 1) {
     throw new TypeError('too many arguments. EnhCmsObject can have only 1 argument.'); 
@@ -181,11 +182,73 @@ EnhCmsObject.prototype = {
     return _result;
   }
 }
-
 $.extend(EnhCmsObject.prototype, Object.prototype);
+*/
 
-var EnhCmsUtil = function(){
+var EnhPrefObject = function(prefcode, prefname) {
+  this.prefcode = prefcode;
+  this.prefname = prefname;
 }
+EnhPrefObject.prototype = {
+  getPrefCode: function() { return this.prefcode; },
+  getPrefName: function() { return this.prefname; },
+  setPrefCode: function(prefcode) { this.prefcode = prefcode; },
+  setPrefName: function(prefname) { this.prefname = prefname; }
+}
+
+var EnhPrefObjectList = function() {
+  var _self = this;
+  var _list = new Array();
+  if (arguments.length == 1) {
+    var args = arguments[0];
+    if (args instanceof Array) {
+      Object.keys(args).forEach(function(k) {
+        if (!args[k].hasOwnProperty('prefcode') || !args[k].hasOwnProperty('prefname')) {
+          throw new TypeError('You need to set array which has a element type of {prefcode: xx, prefname: yyyy} as an argument.');
+        }
+        var _obj = new EnhPrefObject(args[k].prefcode, args[k].prefname);
+        _list.push(_obj);
+      });
+    } else if (args instanceof Object 
+        && args.hasOwnProperty('prefcode') 
+        && args.hasOwnProperty('prefname')) {
+      var _obj = new EnhPrefObject(args.prefcode, args.prefname);
+      _list.push(_obj);
+    } else {
+      throw new TypeError('Type of arguments seems wrong.');
+    }
+  } else if (arguments.length > 1) {
+    Object.keys(args).forEach(function(k) {
+      if (!args[k].hasOwnProperty('prefcode') || !args[k].hasOwnProperty('prefname')) {
+        throw new TypeError('You need to set some objects which has a element type of {prefcode: xx, prefname: yyyy} as arguments.');
+      }
+      var _obj = new EnhPrefObject(args[k].prefcode, args[k].prefname);
+      _list.push(_obj);
+    });
+  }
+  this.length = _list.length;
+  return _list;
+}
+
+EnhPrefObjectList.prototype = {
+  getPrefName: function(prefcode) {
+    var _self = this, _prefname = null;
+    Object.keys(_self).forEach(function(k) {
+      if (_self[k].prefcode === prefcode) {
+        _prefname = _self[k].prefname;
+        break;
+      }
+    });
+    return _prefname;
+  },
+  addPrefObject: function(obj) {
+    
+  },
+}
+
+
+var EnhCmsUtil = function(){}
+
 EnhCmsUtil.prototype = {
   insertDoms: function(target, elem, attr) {
     var _self = this;
@@ -217,7 +280,10 @@ EnhCmsUtil.prototype = {
   insertDomsForPref: function(target, obj) {
     console.log("insertDomsForPref");
   },
-  appendLabelForPref: function(prefcode) {
+  appendLabelForPref: function(element, prefcode) {
+    var _prefname = ().prefname;
+    $(element).attr('class', 'preflabel').attr('id', 'pref_' + prefcode);
+    $(element).append(v.prefname);
     console.log("appendLabelForPref");
   },
   appendUIForPref: function(prefcode) {

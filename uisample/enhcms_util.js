@@ -187,32 +187,25 @@ $.extend(EnhCmsObject.prototype, Object.prototype);
 var EnhCmsUtil = function(){
 }
 EnhCmsUtil.prototype = {
-  map: function(arr, callback) {
-    var _result;
-    if (typeof Array.prototype.map === 'function') {
-      _result = arr.map(callback);
-    } else {
-      _result = new Array();
-      for (var i=0; i<arr.length; i++) {
-        _result.push(callback(arr[i]));
-      }
-    }
-    return _result;
-  },
   insertDoms: function(target, obj) {
    $(target).append(buildDoms(obj)); 
   },
-  buildDoms: function(elem, attr, obj) {
+  buildDoms: function(elem, attr) {
     var _self = this;
     var _elm = document.createElement(elem);
+    _elm = this.setAttr(_elm, attr);
     return _elm;
   },
-  setAttr: function(elem, attr, value) {
+  setAttr: function(elem, attr) {
     var _self = this;
+    if (!(attr instance of Array) && !(attr instance of Object)) throw new TypeError('setAttr should have arguments as an Array or Object.');
     if (attr instanceof Array) {
-      attr.map();
+      $.each(attr, function(k, v) {
+        $(elem).attr(v);  
+      });
+    } else {
+      $(elem).attr(attr, value);
     }
-    $(elem).attr(attr, value);
     return elem;
   },
 }

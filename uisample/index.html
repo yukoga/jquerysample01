@@ -23,6 +23,9 @@
 			width: 360;
 			margin-left: 9em;
 		}
+		.preflabel span.prefui {
+		  float: right;
+		}
 		</style>
 </head>
 <body>
@@ -127,6 +130,12 @@
 </table>
 <input type="button" value="ボタン" id="formButtn1" />
 </form>
+<div id="prefdata">
+  <div class="pref">
+    東京都
+    <input type="hidden" name="prefcode[]" value="13" />
+  </div>
+</div>
 <form id="prefBoxModal">
 	<dl>
 		<dt>広域</dt>

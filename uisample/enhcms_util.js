@@ -187,31 +187,50 @@ $.extend(EnhCmsObject.prototype, Object.prototype);
 var EnhCmsUtil = function(){
 }
 EnhCmsUtil.prototype = {
-  insertDoms: function(target, obj) {
-   $(target).append(buildDoms(obj)); 
-  },
-  buildDoms: function(elem, attr) {
+  insertDoms: function(target, elem, attr) {
     var _self = this;
     var _elm = document.createElement(elem);
     _elm = this.setAttr(_elm, attr);
-    return _elm;
+    $(target).append(_elm);
   },
   setAttr: function(elem, attr) {
     var _self = this;
-    if (!(attr instance of Array) && !(attr instance of Object)) throw new TypeError('setAttr should have arguments as an Array or Object.');
+    if (!(attr instanceof Array) && !(attr instanceof Object)) throw new TypeError('setAttr should have arguments as an Array or Object.');
     if (attr instanceof Array) {
       $.each(attr, function(k, v) {
         $(elem).attr(v);  
       });
     } else {
-      $(elem).attr(attr, value);
+      $(elem).attr(attr);
     }
     return elem;
+  },
+  insertDomsForAll: function(target, obj) {
+    console.log("insertDomsForAll");
+  },
+  insertDomsForEast: function(target, obj) {
+    console.log("insertDomsForEast");
+  },
+  insertDomsForWest: function(target, obj) {
+    console.log("insertDomsForWest");
+  },
+  insertDomsForPref: function(target, obj) {
+    console.log("insertDomsForPref");
+  },
+  appendLabelForPref: function(prefcode) {
+    console.log("appendLabelForPref");
+  },
+  appendUIForPref: function(prefcode) {
+    console.log("appendUIForPref");
+  },
+  appendHiddenForPref: function(prefcode) {
+    console.log("appendHiddenForPref");
   },
 }
 
 
 $(function() {
+  var _util = new EnhCmsUtil();
   $('#prefBoxModal').dialog({
     autoOpen: false,
    	height: 380,
@@ -228,12 +247,36 @@ $(function() {
           || 
           (($.inArray('98', _prefCode) > -1) && ($.inArray('97', _prefCode) > -1))
           ) {
+          _util.insertDomsForAll('#prefData', _prefObj);
 		      console.log("「全国」と「東日本」「西日本」あるいは他の都道府県を選択した場合、すべての都道府県に対してデータが登録されます。");
 		  	} else if ($.inArray("98", _prefCode) > -1) {
+          _util.insertDomsForWest('#prefData', _westPrefObj);
 		      console.log("「西日本」として、西日本のすべての都道府県にデータが登録されます。");
 		  	} else if ($.inArray("97", _prefCode) > -1) {
+          _util.insertDomsForEast('#prefData', _eastPrefObj);
 		      console.log("「東日本」として、東日本のすべての都道府県にデータが登録されます。");
 		  	} else {
+          var _regarr = $(_prefObj).filter(function(k) {
+            return ($.inArray(this.prefcode, _prefCode) > -1);
+          });
+          _util.insertDomsForPref('#prefData', _regarr);
+          $.each(_regarr, function(k, v) {
+            var _elm = document.createElement('div');
+            $(_elm).attr('class', 'preflabel').attr('id', 'pref_' + v.prefcode);
+            $(_elm).append(v.prefname);
+            $(_elm).append('<span class="prefui"><a href="javascript:void(0);" id="addDetailedArea_' + v.prefcode + '">詳細地域を入力する</a>&nbsp;|&nbsp;<a href="javascript:void(0);" id="delPrefData_' + v.prefcode + '">削除する</span><br />');
+            $(_elm).append('<input type="hidden" name="prefcode[]" value="' + v.prefcode + '" />');
+            $(_elm).children().children('#delPrefData_' + v.prefcode).click(function() {
+              $(this).parent().parent().remove();
+            });
+            $(_elm).children().children('#addDetailedArea_' + v.prefcode).click(function() {
+              var _elm = document.createElement('textarea');
+              $(_elm).attr({name: 'underPref_' + v.prefcode, rows: '10', cols: '100'});
+              $(this).parent().parent().append(_elm);
+            });
+            $('#prefdata').append(_elm);
+          });
+          console.log("都道府県のデータを追加します");
         }
 			 	$(this).dialog('close');		  	  	
 		  },

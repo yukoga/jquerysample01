@@ -16,7 +16,7 @@
 			clear: both;
 			float: left;
 			width: 96px;
-			background:#ff0000;
+			background:#DDDDDD;
 		}
 		#prefBoxModal dd {
 			width: 360;
@@ -28,113 +28,21 @@
 		</style>
 </head>
 <body>
-<p>次の３つの機能をもつサンプルを作る</p>
-1.テキストボックスをクリックしたら都道府県のチェックボックスが表示される <br />
-2.チェックボックスをクリックしたらチェックされた都道府県が入力されたテキストボックスを複数表示する。<br />
-3.さらに、都道府県のテキストボックスの隣の詳細地域を入力する、をクリックしたらテキストエリアが表示される。 <br />
-
-<br />
-<br />
+<p>都道府県入力UIのサンプル</p>
 
 <form action="#">
 <table>
 		<tbody>
         <tr>
 				<th>都道府県のパネルを表示する</th>
-                <td><input type="button" name="prefbutton" value="都道府県" id="prefbutton" /></td>
-        </tr>
-        <tr>
-				<th>xxxx</th>
-                <td><input type="text" name="pref01" value="都道府県を入力してください" id="pref01" /></td>
-        </tr>
-        <tr>
-			<th>影響範囲</th>
-			<td>
-			<div id="pref1">
-	    	<select id="pref_code" name="pref" class="selectable">
-	    		<optgroup label="北海道">
-	    			<option value="01">北海道</option>
-	    		</optgroup>
-	    		<optgroup label="東北">
-	    			<option value="02">青森県</option>
-	    			<option value="03">岩手県</option>	
-	    			<option value="04">宮城県</option>
-	    			<option value="05">秋田県</option>
-	    			<option value="06">山形県</option>
-	    			<option value="07">福島県</option>
-	    		</optgroup>
-	    		<optgroup label="関東">
-	    			<option value="08">東京都</option>
-	    			<option value="09">茨城県</option>
-	    			<option value="10">栃木県</option>
-	    			<option value="11">群馬県</option>
-	    			<option value="12">埼玉県</option>
-	    			<option value="13">千葉県</option>
-	    			<option value="14">神奈川県</option>
-	    		</optgroup>
-	    		<optgroup label="北陸">
-	    			<option value="15">富山県</option>
-	    			<option value="16">石川県</option>
-	    			<option value="17">福井県</option>
-	    		</optgroup>
-	    		<optgroup label="甲信越">
-	    			<option value="18">新潟県</option>
-	    			<option value="19">山梨県</option>
-	    			<option value="20">長野県</option>
-	    		</optgroup>
-	    		<optgroup label="東海">
-	    			<option value="21">岐阜県</option>
-	    			<option value="22">静岡県</option>
-	    			<option value="23">愛知県</option>
-	    			<option value="24">三重県</option>
-	    		</optgroup>
-	    		<optgroup label="関西">
-	    			<option value="25">滋賀県</option>
-	    			<option value="26">京都府</option>
-	    			<option value="27">大阪府</option>
-	    			<option value="28">兵庫県</option>
-	    			<option value="29">奈良県</option>
-	    			<option value="30">和歌山県</option>
-	    		</optgroup>
-	    		<optgroup label="中四国">
-	    			<option value="31">鳥取県</option>
-	    			<option value="32">島根県</option>
-	    			<option value="33">岡山県</option>
-	    			<option value="34">広島県</option>
-	    			<option value="35">山口県</option>
-	    			<option value="36">徳島県</option>
-	    			<option value="37">香川県</option>
-	    			<option value="38">愛媛県</option>
-	    			<option value="39">高知県</option>
-	    		</optgroup>
-	    		<optgroup label="九州">
-	    			<option value="40">福岡県</option>
-	    			<option value="41">佐賀県</option>
-	    			<option value="42">長崎県</option>
-	    			<option value="43">熊本県</option>
-	    			<option value="44">大分県</option>
-	    			<option value="45">宮崎県</option>
-	    			<option value="46">鹿児島県</option>
-	    		</optgroup>
-	    		<optgroup label="沖縄">
-	    			<option value="47">沖縄県</option>
-	    		</optgroup>
-	    	</select>
-	    	<a href="#" class="delPrefUI">削除する</a>
-	    	<a href="#" class="addDetailedArea">詳細な地域を追加する</a><br />
-	    	</div>				
-			</td>
+				<td>
+			  	  <input type="button" name="prefbutton" value="都道府県の選択" id="prefbutton" />
+				  <div id="prefdata"></div>
+				</td>
         </tr>
 		</tbody>
 </table>
-<input type="button" value="ボタン" id="formButtn1" />
 </form>
-<div id="prefdata">
-  <div class="pref">
-    東京都
-    <input type="hidden" name="prefcode[]" value="13" />
-  </div>
-</div>
 <form id="prefBoxModal">
 	<dl>
 		<dt>広域</dt>
